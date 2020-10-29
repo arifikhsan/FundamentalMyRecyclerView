@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private val list = ArrayList<Hero>()
+    private var title = "Mode List"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +20,11 @@ class MainActivity : AppCompatActivity() {
 
         list.addAll(getListHeroes())
         showRecyclerList()
+        setActionBarTitle()
+    }
+
+    private fun setActionBarTitle() {
+        supportActionBar?.title = title
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -32,26 +38,30 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setMode(selectedMode: Int) {
-        when(selectedMode) {
+        when (selectedMode) {
             R.id.action_list -> showRecyclerList()
             R.id.action_cardview -> showRecyclerCardView()
             R.id.action_grid -> showRecyclerGrid()
         }
+        setActionBarTitle()
     }
 
     private fun showRecyclerGrid() {
         rv_heroes.layoutManager = GridLayoutManager(this, 2)
         rv_heroes.adapter = GridHeroAdapter(list)
+        title = "Mode Grid"
     }
 
     private fun showRecyclerCardView() {
-//        rv_heroes.layoutManager =
+        rv_heroes.layoutManager = LinearLayoutManager(this)
+        rv_heroes.adapter = CardViewHeroAdapter(list)
+        title = "Mode CardView"
     }
-
 
     private fun showRecyclerList() {
         rv_heroes.layoutManager = LinearLayoutManager(this)
         rv_heroes.adapter = ListHeroAdapter(list)
+        title = "Mode List"
     }
 
     private fun getListHeroes(): ArrayList<Hero> {
